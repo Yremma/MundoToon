@@ -8,7 +8,7 @@
                 </div>
                 <hr><br>
                 <p>
-                    Mundo Toon nació en 2018 con el propósito de <strong>impulsar a los Artistas Independientes</strong>, 
+                    Mundotoon nació en 2018 con el propósito de <strong>impulsar a los Artistas Independientes</strong>, 
                     brindándoles un espacio libre para promover sus trabajos internacionalmente sin limitaciones de idiomas.
                 </p>
                 <p>
