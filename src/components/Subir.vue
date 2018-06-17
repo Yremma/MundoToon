@@ -65,6 +65,7 @@
                                     </el-option>
                                 </el-select>
                             </el-form-item>
+                            <el-button type="primary" @click="CargarPais=true">Agregar País</el-button>
                         </el-col>
 
                         <!-- Año Inicio -->
@@ -115,10 +116,10 @@
             </el-dialog>
 
 
+            <!-- MODAL NUEVO AUTOR -->
             <el-dialog
                 title="CARGAR NUEVO AUTOR"
                 :visible.sync="CargarAutor"
-                :before-close="handleClose"
                 :show-close="false"
                 width="50%"
                 center>
@@ -138,6 +139,33 @@
                     </el-row>
                 </el-form>
             </el-dialog>
+
+
+            <!-- MODAL NUEVO PAIS-->
+            <el-dialog
+                title="CARGAR NUEVO PAIS"
+                :visible.sync="CargarPais"
+                :show-close="false"
+                width="50%"
+                center>
+                <el-form ref="frmPais" :model="frmPais" :rules="rulesAutor" style="margin-top:10px">
+                    <el-row>
+                        <el-col :span="24">
+                            <el-form-item label="Nombre del País" prop="Nombre">
+                                <el-input v-model="frmPais.Nombre"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :xs="24" :sm="12" style="padding:10px !important; float:right">
+                            <el-button type="success"   @click="SubmitPais('frmPais')"  style="width:100%">Guardar</el-button>
+                        </el-col>
+                        <el-col :xs="24" :sm="12" style="padding:10px !important; float:left">
+                            <el-button type="info"      @click="CargarPais=false"       style="width:100%">Cerrar </el-button>
+                        </el-col>
+                    </el-row>
+                </el-form>
+            </el-dialog>
+
+
         </el-row>
     </div>
 </template>
@@ -157,9 +185,11 @@
                 Pitty:          'imagenes/ul_li.svg',
                 CargarAutor:    false,
                 CargarObra:     false,
+                CargarPais:     false,
                 form:           {},
                 frmAutor:       {},
                 frmObra:        {},
+                frmPais:        {},
                 Autores:        [],        
                 Paises:         [],
                 error:          '',
@@ -179,7 +209,12 @@
                 },
                 rulesObra: {
                     
-                }
+                },
+                rulesPais: {
+                    Nombre: [
+                        { required: true, message: 'Por favor, ingresa el Nombre del País', trigger: 'blur' },
+                    ],    
+                },
                 
             };
         },
@@ -246,6 +281,36 @@
                                 this.$message({
                                     showClose:          true,
                                     message:            'Autor cargado correctamente.',
+                                    type:               'success'
+                                });
+                            })
+                            .catch(e => {
+                                this.$message({
+                                    showClose:          true,
+                                    message:            'Oops, por favor intenta nuevamente.',
+                                    type:               'error'
+                                });
+                            })                 
+                    }
+                });
+            },
+
+            SubmitPais(formName)
+            {   this.$refs[formName].validate((valid) => {
+                    if (valid)
+                    {   axios.get('http://studiosvrd.com/api/pais_insert.php', {
+                            params: {
+                                idUsuario:              localStorage.getItem('VRDUSER'), 
+                                Nombre:                 this.frmPais.Nombre,
+                            } })
+                            .then(response => {
+                                const datos             = response.data;
+                                this.Paises             = datos['Paises'];
+                                this.CargarPais         = false;
+                                this.frmPais.Nombre     = '';
+                                this.$message({
+                                    showClose:          true,
+                                    message:            'País cargado correctamente.',
                                     type:               'success'
                                 });
                             })
