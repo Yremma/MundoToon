@@ -9,15 +9,7 @@
                 <hr>
 
 
-                <!-- Alertass -->
-
-
                 <el-button type="primary" @click="CargarObra=true">Cargar Obra</el-button>
-
-                
-
-
-
 
                 <!-- Formulario -->
                 <el-form ref="form" :model="form" :rules="rules" style="margin-top:10px">
@@ -26,9 +18,10 @@
            
             </el-col>
         </el-row>
-
-
         <el-row>
+
+
+            <!-- MODAL NUEVA OBRA -->
             <el-dialog
                 title="CARGAR NUEVA OBRA"
                 :visible.sync="CargarObra"
@@ -46,6 +39,36 @@
                             </el-form-item>
                         </el-col>
 
+                        <!-- Autores -->
+                        <el-col :xs="24" :sm="12">
+                            <el-form-item label="Autor/es">
+                                <el-select v-model="frmObra.ldAutor" multiple placeholder="Selecciona" class="el-col el-col-24" style="padding:0px !important">
+                                    <el-option
+                                        v-for="item in Autores"
+                                        :key="item.id"
+                                        :label="item.Autor"
+                                        :value="item.id">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-button type="primary" @click="CargarAutor=true">Agregar Autor</el-button>
+                        </el-col>
+
+                        <!-- Editoriales -->
+                        <el-col :xs="24" :sm="12">
+                            <el-form-item label="Editorial/es">
+                                <el-select v-model="frmObra.ldEditorial" multiple placeholder="Selecciona" class="el-col el-col-24" style="padding:0px !important">
+                                    <el-option
+                                        v-for="item in Editoriales"
+                                        :key="item.id"
+                                        :label="item.Editorial"
+                                        :value="item.id">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-button type="primary" @click="CargarEditorial=true">Agregar Editorial</el-button>
+                        </el-col>
+                        
                         <!-- Descripcion -->
                         <el-col :xs="24" :sm="12">
                             <el-form-item label="Descripción" prop="Descripcion">
@@ -92,20 +115,7 @@
                         </el-col>
 
 
-                        <!-- Autores -->
-                        <el-col :xs="24" :sm="12">
-                            <el-form-item label="Autor/es">
-                                <el-select v-model="frmObra.ldAutor" multiple placeholder="Selecciona" class="el-col el-col-24" style="padding:0px !important">
-                                    <el-option
-                                        v-for="item in Autores"
-                                        :key="item.id"
-                                        :label="item.Autor"
-                                        :value="item.id">
-                                    </el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-button type="primary" @click="CargarAutor=true">Agregar Autor</el-button>
-                        </el-col>
+                        
 
                     </el-row> 
                 </el-form>
@@ -135,6 +145,31 @@
                         </el-col>
                         <el-col :xs="24" :sm="12" style="padding:10px !important; float:left">
                             <el-button type="info"      @click="CargarAutor=false"        style="width:100%">Cerrar </el-button>
+                        </el-col>
+                    </el-row>
+                </el-form>
+            </el-dialog>
+
+
+            <!-- MODAL NUEVA EDITORIAL -->
+            <el-dialog
+                title="CARGAR NUEVA EDITORIAL"
+                :visible.sync="CargarEditorial"
+                :show-close="false"
+                width="50%"
+                center>
+                <el-form ref="frmEditorial" :model="frmEditorial" :rules="rulesEditorial" style="margin-top:10px">
+                    <el-row>
+                        <el-col :span="24">
+                            <el-form-item label="Nombre de la Editorial" prop="Nombre">
+                                <el-input v-model="frmEditorial.Nombre"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :xs="24" :sm="12" style="padding:10px !important; float:right">
+                            <el-button type="success"   @click="SubmitEditorial('frmEditorial')"    style="width:100%">Guardar</el-button>
+                        </el-col>
+                        <el-col :xs="24" :sm="12" style="padding:10px !important; float:left">
+                            <el-button type="info"      @click="CargarEditorial=false"              style="width:100%">Cerrar </el-button>
                         </el-col>
                     </el-row>
                 </el-form>
@@ -182,29 +217,37 @@
         
         data()
         {   return {             
-                Pitty:          'imagenes/ul_li.svg',
-                CargarAutor:    false,
-                CargarObra:     false,
-                CargarPais:     false,
-                form:           {},
-                frmAutor:       {},
-                frmObra:        {},
-                frmPais:        {},
-                Autores:        [],        
-                Paises:         [],
-                error:          '',
+                Pitty:              'imagenes/ul_li.svg',
+                CargarAutor:        false,
+                CargarEditorial:    false,
+                CargarObra:         false,
+                CargarPais:         false,
+                form:               {},
+                frmAutor:           {},
+                frmEditorial:       {},
+                frmObra:            {},
+                frmPais:            {},
+                Autores:            [],
+                Editoriales:        [],        
+                Paises:             [],
+                error:              '',
 
                 //Foto
-                foto:           [],
-                NuevaFoto:      [],
-                PreviewFoto:    '#',
-                GuardarFoto:    false,
+                foto:               [],
+                NuevaFoto:          [],
+                PreviewFoto:        '#',
+                GuardarFoto:        false,
 
                 rules: {
                 },
                 rulesAutor: {
                     Nombre: [
                         { required: true, message: 'Por favor, ingresa el Nombre del Autor', trigger: 'blur' },
+                    ],    
+                },
+                rulesEditorial: {
+                    Nombre: [
+                        { required: true, message: 'Por favor, ingresa el Nombre de la Editorial.', trigger: 'blur' },
                     ],    
                 },
                 rulesObra: {
@@ -245,22 +288,22 @@
             {   document.getElementById(id).click();
             },
             UpdateFoto(event)
-            {   this.NuevaFoto                          = event.target.files; 
+            {   this.NuevaFoto                              = event.target.files; 
                 if(this.NuevaFoto[0].type=='image/jpeg' || this.NuevaFoto[0].type=='image/bmp' || this.NuevaFoto[0].type=='image/png')
-                {   this.GuardarFoto                    = true;
-                    this.PreviewFoto                    = URL.createObjectURL(event.target.files[0]);
-                    var reader                          = new FileReader();
-                    reader.onload                       = this._handleReaderLoadedFoto.bind(this);
+                {   this.GuardarFoto                        = true;
+                    this.PreviewFoto                        = URL.createObjectURL(event.target.files[0]);
+                    var reader                              = new FileReader();
+                    reader.onload                           = this._handleReaderLoadedFoto.bind(this);
                     reader.readAsBinaryString(this.NuevaFoto[0]);
                 }
                 else
-                {   this.GuardarFoto                    = false;
-                    this.PreviewFoto                    = '#';
+                {   this.GuardarFoto                        = false;
+                    this.PreviewFoto                        = '#';
                 }                 
             },
             _handleReaderLoadedFoto(readerEvt)
-            {   var binaryString                        = readerEvt.target.result;
-                this.frmObra.flPortada                  = btoa(binaryString);               // Converting binary string data.
+            {   var binaryString                            = readerEvt.target.result;
+                this.frmObra.flPortada                      = btoa(binaryString);               // Converting binary string data.
             },
 
 
@@ -270,25 +313,55 @@
                     if (valid)
                     {   axios.get('http://studiosvrd.com/api/autor_insert.php', {
                             params: {
-                                idUsuario:              localStorage.getItem('VRDUSER'), 
-                                Nombre:                 this.frmAutor.Nombre,
+                                idUsuario:                  localStorage.getItem('VRDUSER'), 
+                                Nombre:                     this.frmAutor.Nombre,
                             } })
                             .then(response => {
-                                const datos             = response.data;
-                                this.Autores            = datos['Autores'];
-                                this.CargarAutor        = false;
-                                this.frmAutor.Nombre    = '';
+                                const datos                 = response.data;
+                                this.Autores                = datos['Autores'];
+                                this.CargarAutor            = false;
+                                this.frmAutor.Nombre        = '';
                                 this.$message({
-                                    showClose:          true,
-                                    message:            'Autor cargado correctamente.',
-                                    type:               'success'
+                                    showClose:              true,
+                                    message:                'Autor cargado correctamente.',
+                                    type:                   'success'
                                 });
                             })
                             .catch(e => {
                                 this.$message({
-                                    showClose:          true,
-                                    message:            'Oops, por favor intenta nuevamente.',
-                                    type:               'error'
+                                    showClose:              true,
+                                    message:                'Oops, por favor intenta nuevamente.',
+                                    type:                   'error'
+                                });
+                            })                 
+                    }
+                });
+            },
+
+            SubmitEditorial(formName)
+            {   this.$refs[formName].validate((valid) => {
+                    if (valid)
+                    {   axios.get('http://studiosvrd.com/api/editorial_insert.php', {
+                            params: {
+                                idUsuario:                  localStorage.getItem('VRDUSER'), 
+                                Nombre:                     this.frmEditorial.Nombre,
+                            } })
+                            .then(response => {
+                                const datos                 = response.data;
+                                this.Editoriales            = datos['Editoriales'];
+                                this.CargarEditorial        = false;
+                                this.frmEditorial.Nombre    = '';
+                                this.$message({
+                                    showClose:              true,
+                                    message:                'Editorial cargada correctamente.',
+                                    type:                   'success'
+                                });
+                            })
+                            .catch(e => {
+                                this.$message({
+                                    showClose:              true,
+                                    message:                'Oops, por favor intenta nuevamente.',
+                                    type:                   'error'
                                 });
                             })                 
                     }
@@ -300,32 +373,33 @@
                     if (valid)
                     {   axios.get('http://studiosvrd.com/api/pais_insert.php', {
                             params: {
-                                idUsuario:              localStorage.getItem('VRDUSER'), 
-                                Nombre:                 this.frmPais.Nombre,
+                                idUsuario:                  localStorage.getItem('VRDUSER'), 
+                                Nombre:                     this.frmPais.Nombre,
                             } })
                             .then(response => {
-                                const datos             = response.data;
-                                this.Paises             = datos['Paises'];
-                                this.CargarPais         = false;
-                                this.frmPais.Nombre     = '';
+                                const datos                 = response.data;
+                                this.Paises                 = datos['Paises'];
+                                this.CargarPais             = false;
+                                this.frmPais.Nombre         = '';
                                 this.$message({
-                                    showClose:          true,
-                                    message:            'País cargado correctamente.',
-                                    type:               'success'
+                                    showClose:              true,
+                                    message:                'País cargado correctamente.',
+                                    type:                   'success'
                                 });
                             })
                             .catch(e => {
                                 this.$message({
-                                    showClose:          true,
-                                    message:            'Oops, por favor intenta nuevamente.',
-                                    type:               'error'
+                                    showClose:              true,
+                                    message:                'Oops, por favor intenta nuevamente.',
+                                    type:                   'error'
                                 });
                             })                 
                     }
                 });
             },
+
             Submit(formName)
-            {   this.error                              = '';
+            {   this.error                                  = '';
                 this.$refs[formName].validate((valid) => {
                     if (valid)
                     {                          
@@ -357,9 +431,10 @@
             else
             {   axios.get('http://studiosvrd.com/api/obras_datos.php')
                     .then(response => {
-                        const datos                     = response.data;
-                        this.Autores                    = datos['Autores'];
-                        this.Paises                     = datos['Paises'];
+                        const datos                         = response.data;
+                        this.Autores                        = datos['Autores'];
+                        this.Editoriales                    = datos['Editoriales'];
+                        this.Paises                         = datos['Paises'];
                         console.log(datos);
                     })
                     .catch(e => {
