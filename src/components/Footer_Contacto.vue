@@ -3,7 +3,7 @@
         <el-row type="flex" justify="center">
             <el-col :span="23" class="cuerpo">
                 <div class="subtitulo">
-                    <img :src="Pitty"/>
+                    <embed :src="Pitty"/>
                     CONTACTO
                 </div>
                 <hr><br>
@@ -86,7 +86,7 @@
         data()
         {   return {             
                 Pitty:          'imagenes/ul_li.svg',
-                idUsuario:      localStorage.getItem('currentUser'),
+                idUsuario:      localStorage.getItem('VRDUSER'),
                 error:          false,
                 success:        false,
                 form:       

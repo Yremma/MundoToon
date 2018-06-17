@@ -10,9 +10,14 @@ import 'element-ui/lib/theme-chalk/display.css'
 
 import App              from './App.vue'
 import Home             from '@/components/Home'
+import Login            from '@/components/Login'
+import Registro         from '@/components/Registro'
+import Recuperar        from '@/components/Pass_Recuperar'
+import Subir            from '@/components/Subir'
 import Contacto         from '@/components/Footer_Contacto'
 import Mision           from '@/components/Footer_Mision'
 import Reglas           from '@/components/Footer_Reglas'
+import Tutoriales       from '@/components/Footer_Tutoriales'
 
 
 
@@ -25,17 +30,27 @@ Vue.use(Router)
 const router = new Router({
     mode: 'history',
     routes: [
-        {   path: '/',          name: 'home',       component: Home,
+        {   path: '/',              name: 'home',           component: Home,
         },
-        {   path: '/contacto',  name: 'contacto',   component: Contacto,
+        {   path: '/contacto',      name: 'contacto',       component: Contacto,
         },
-        {   path: '/mision',    name: 'mision',     component: Mision,     
+        {   path: '/login',         name: 'login',          component: Login,
         },
-        {   path: '/reglas',    name: 'reglas',     component: Reglas,
+        {   path: '/mision',        name: 'mision',         component: Mision,     
         },
-        {   path: '',           redirect: '/',
+        {   path: '/recuperar',     name: 'recuperar',      component: Recuperar,
         },
-        {   path: '*',          redirect: '/',
+        {   path: '/registro',      name: 'registro',       component: Registro,
+        },
+        {   path: '/reglas',        name: 'reglas',         component: Reglas,
+        },
+        {   path: '/subir',         name: 'subir',          component: Subir,
+        },
+        {   path: '/tutoriales',    name: 'tutoriales',     component: Tutoriales,
+        },
+        {   path: '',               redirect: '/',
+        },
+        {   path: '*',              redirect: '/',
         }
   ]
 })

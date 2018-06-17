@@ -1,10 +1,8 @@
 <template>
     <el-container id="app">
-        <!--
         <el-header>
             <Header></Header>
         </el-header>
-        -->
         <el-main v-bind:style="{ minHeight: Height + 'px' }">
             <!--
             <div class="hidden-sm-and-up" style="margin-top:15%"></div>
@@ -33,7 +31,7 @@
         },
         data()
         {   return {
-                Height:  window.innerHeight * 72 / 100,
+                Height:  window.innerHeight * 55 / 100,
             }
         }
     }
@@ -79,8 +77,8 @@
     
 
     .el-col
-    {   padding-left: 30px !important;
-        padding-right: 30px !important;
+    {   padding-left: 15px;
+        padding-right: 15px;
     }
 
 
@@ -100,5 +98,10 @@
     {   -webkit-box-shadow: 0px 5px 5px 0px rgba(50, 50, 50, 0.5);
         -moz-box-shadow:    0px 5px 5px 0px rgba(50, 50, 50, 0.5);
         box-shadow:         0px 5px 5px 0px rgba(50, 50, 50, 0.5);
+    }
+
+    .el-dialog
+    {   margin-left: 0px !important;
+        padding-left: 0px !important;
     }
 </style>

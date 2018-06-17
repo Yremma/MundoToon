@@ -1,6 +1,7 @@
 <template>
     <div id="header">
-        Este es el Header
+        <router-link to="/login">Login</router-link> |
+        <router-link to="/subir">Subir</router-link>
     </div>
 </template>
 

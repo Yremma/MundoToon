@@ -1,16 +1,15 @@
 <template>
     <div id="footer">
         <el-row type="flex" justify="center">
-            <el-col :span="23" class="divFooter" style="padding: 0px !important">
+            <el-col :span="23" class="divFooter">
                 <el-row>
-                    <el-col :xs="24" :md="9">
-                        <ul>
-                            <li><router-link to="/mision"   >Sobre Nosotros             </router-link></li>
-                            <li><router-link to="/reglas"   >Reglas de la Comunidad     </router-link></li>
-                            <li><router-link to="/contacto" >Contacto                   </router-link></li>
-                        </ul>
+                    <el-col :xs="24" :md="9" style="padding-top:10px">
+                        <embed :src="Pitty"/>&nbsp;&nbsp;<router-link class="btn-footer" to="/tutoriales"   >Tutoriales                 </router-link><br>
+                        <embed :src="Pitty"/>&nbsp;&nbsp;<router-link class="btn-footer" to="/mision"       >Sobre Nosotros             </router-link><br>
+                        <embed :src="Pitty"/>&nbsp;&nbsp;<router-link class="btn-footer" to="/reglas"       >Reglas de la Comunidad     </router-link><br>
+                        <embed :src="Pitty"/>&nbsp;&nbsp;<router-link class="btn-footer" to="/contacto"     >Contacto                   </router-link><br>
                     </el-col>
-                    <el-col :xs="24" :md="15" style="padding:0px" align="justify">
+                    <el-col :xs="24" :md="15" align="justify">
                         <br>
                         <small>
                             Mundotoon no es propietario de los Derechos de las Obras que aquí se pueden encontrar. 
@@ -25,12 +24,12 @@
                         <a class="social" target="_blank" href="https://plus.google.com/u/0/112525390602754278483">
                             <img :src="Logo_Google"/>
                         </a>
-                        <br>
+                        <br><br>
                         <span style="float:right">
                             <i>
                                 <small>
                                     &copy;Mundotoon y &copy;Studios VRD! by 
-                                    <a href="http://laredmd.com" target="_blank">laredmd</a>
+                                    <a href="http://laredmd.com" class="btn-footer" target="_blank">laredmd</a>
                                 </small>
                             </i>
                         </span>
@@ -50,6 +49,7 @@
         
         data()
         {   return {
+                Pitty:          'imagenes/ul_li.svg',
                 Logo_Facebook:  'imagenes/Facebook.png',
                 Logo_Google:    'imagenes/Google.png',
                 Logo_Twitter:   'imagenes/Twitter.png',
@@ -70,11 +70,7 @@
         box-shadow:         0px 5px 20px 0px rgba(50, 50, 50, 0.5);
     }
 
-    ul
-    {   list-style: inside url("./../assets/ul_li.svg");
-        padding-left: 0px !important;
-    }
-    li a
+    .btn-footer
     {   color: #74047c;
         font-size: 16px;
         -webkit-transition: all 300ms ease-in-out;
@@ -83,7 +79,7 @@
         -ms-transition: all 300ms ease-in-out;
         transition: all 300ms ease-in-out;
     }
-    li:hover a
+    .btn-footer:hover
     {   color: #f00;
         font-size: 18px;
         -webkit-transition: all 300ms ease-in-out;

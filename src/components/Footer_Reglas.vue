@@ -3,7 +3,7 @@
         <el-row type="flex" justify="center">
             <el-col :span="23" class="cuerpo">
                 <div class="subtitulo">
-                    <img :src="Pitty"/>
+                    <embed :src="Pitty"/>
                     REGLAS DE LA COMUNIDAD
                 </div>
                 <hr><br>
@@ -13,7 +13,7 @@
                 <el-row style="margin-top:40px">
                     <el-col :xs="24" :md="12" align="left">
                         <div class="subtitulo">
-                            <img :src="Pitty"/>&nbsp;Foro
+                            <embed :src="Pitty"/>&nbsp;Foro
                         </div>
                         <hr>
                         <ol>
@@ -46,14 +46,14 @@
                     </el-col>
                     <el-col :xs="24" :md="12" align="left">
                         <div class="subtitulo">
-                            <img :src="Pitty"/>&nbsp;Contenido
+                            <embed :src="Pitty"/>&nbsp;Contenido
                         </div>
                         <hr>
                         <ol>
                             <li>
-                                <strong>ETIQUETAS: </strong>Al mmomento de subir contenido, cada Historieta debe 
+                                <strong>ETIQUETAS: </strong>Al momento de subir contenido, cada Historieta debe 
                                 tener asignadas las etiquetas correspondientes para mantener a los usuarios 
-                                informados sobre lo que están a puntop de leer.
+                                informados sobre lo que están a punto de leer.
                             </li><br>
                             <li>
                                 <strong>PROPIEDAD INTELECTUAL: </strong>Queda prohibido subir como propio el 

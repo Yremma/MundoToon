@@ -1,25 +1,21 @@
 <template>
-    <div id="mision">
+    <div id="tutoriales">
         <el-row type="flex" justify="center">
             <el-col :span="23" class="cuerpo">
                 <div class="subtitulo">
                     <embed :src="Pitty"/>
-                    MUNDOTOON
+                    TUTORIALES
                 </div>
-                <hr><br>
-                <p>
-                    Mundotoon nació en 2018 con el propósito de <strong>impulsar a los Artistas Independientes</strong>, 
-                    brindándoles un espacio libre para promover sus trabajos internacionalmente sin limitaciones de idiomas.
-                </p>
-                <p>
-                    Nuestro Objetivo es crear un <strong>Portal Mundial de la Historieta y la Ilustración </strong> 
-                    para poder dar rienda suelta a nuestra creatividad y que no existan barreras a la hora 
-                    de compartir nuestro Arte. Queremos ayudar a distribuir felicidad a cada usuario/lector sin 
-                    discriminar su nacionalidad.
-                </p><br>
-                <p>
-                    <center><strong>MUNDOTOON, EL LENGUAJE UNIVERSAL</strong></center>
-                </p>
+                <hr>
+
+
+                <!-- Alertass -->
+
+
+                <!-- Formulario -->
+                <el-form ref="form" :model="form" :rules="rules" style="margin-top:10px">
+                    
+                </el-form>
             </el-col>
         </el-row>
     </div>
@@ -28,21 +24,48 @@
 
 
 <script>
+    import axios from 'axios';
+    
+    
     export default
-    {   name: 'Mision',
+    {   name: 'Tutoriales',
         
-
+        
         data()
-        {   return { 
-                Pitty:  'imagenes/ul_li.svg',
+        {   return {             
+                Pitty:          'imagenes/ul_li.svg',
+                error:          '',
+                form:       
+                {   
+                },
+
+                rules: {
+                }
             };
+        },
+
+
+        methods:
+        {   Submit(formName)
+            {   this.error      = '';
+                this.$refs[formName].validate((valid) => {
+                    if (valid)
+                    {                          
+                    }
+                });
+                window.scroll({
+                    top: 0, 
+                    left: 0, 
+                    behavior: 'smooth' 
+                });
+            }
         },
 
 
         mounted()
         {   setTimeout(function() { 
-                var mision = document.getElementById('mision');
-                mision.classList.toggle('fadein');
+                var tutoriales = document.getElementById('tutoriales');
+                tutoriales.classList.toggle('fadein');
             }, 1000);
         },
 
@@ -60,7 +83,7 @@
 
 
 <style>
-    #mision
+    #tutoriales
     {   margin-left: -100%;
         opacity: 0;
         transition: opacity 3s;
@@ -70,7 +93,7 @@
         -ms-transition: all 300ms ease-in-out;
         transition: all 300ms ease-in-out; 
     }
-    #mision.fadein
+    #tutoriales.fadein
     {   margin-left: 0%;
         margin-right: 0%;
         opacity: 1;
