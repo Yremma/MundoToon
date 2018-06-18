@@ -29,77 +29,98 @@
                 :show-close="false"
                 width="90%"
                 center>
-                <el-form ref="frmObra" :model="frmObra" :rules="rulesAutor" style="margin-top:10px">
+                <el-form ref="frmObra" :model="frmObra" :rules="rulesObra" :status-icon="true" style="margin-top:10px">
                     <el-row>
-
-                        <!-- Titulo -->
                         <el-col :xs="24" :sm="12">
+
+                            <!-- Titulo -->
                             <el-form-item label="Título de la Obra" prop="Titulo">
                                 <el-input v-model="frmObra.Titulo"></el-input>
                             </el-form-item>
-                        </el-col>
 
-                        <!-- Autores -->
-                        <el-col :xs="24" :sm="12">
+                            <!-- Autores -->
                             <el-form-item label="Autor/es">
-                                <el-select v-model="frmObra.ldAutor" multiple placeholder="Selecciona" class="el-col el-col-24" style="padding:0px !important">
-                                    <el-option
-                                        v-for="item in Autores"
-                                        :key="item.id"
-                                        :label="item.Autor"
-                                        :value="item.id">
-                                    </el-option>
-                                </el-select>
+                                <div class="el-input el-input-group el-input-group--append">
+                                    <el-select v-model="frmObra.ldAutor" multiple placeholder="Selecciona" class="el-input__inner" style="border:none; box-shadow:none; padding:0px !important">
+                                        <el-option
+                                            v-for="item in Autores"
+                                            :key="item.id"
+                                            :label="item.Autor"
+                                            :value="item.id">
+                                        </el-option>
+                                    </el-select>
+                                    <div class="el-input-group__append">
+                                        <button type="button" class="el-button el-button--default" @click="CargarAutor=true">
+                                            <i class="el-icon-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </el-form-item>
-                            <el-button type="primary" @click="CargarAutor=true">Agregar Autor</el-button>
-                        </el-col>
 
-                        <!-- Editoriales -->
-                        <el-col :xs="24" :sm="12">
+                            <!-- Editoriales -->
                             <el-form-item label="Editorial/es">
-                                <el-select v-model="frmObra.ldEditorial" multiple placeholder="Selecciona" class="el-col el-col-24" style="padding:0px !important">
+                                <div class="el-input el-input-group el-input-group--append">
+                                    <el-select v-model="frmObra.ldEditorial" multiple placeholder="Selecciona" class="el-input__inner" style="border:none; box-shadow:none; padding:0px !important">
+                                        <el-option
+                                            v-for="item in Editoriales"
+                                            :key="item.id"
+                                            :label="item.Editorial"
+                                            :value="item.id">
+                                        </el-option>
+                                    </el-select>
+                                    <div class="el-input-group__append">
+                                        <button type="button" class="el-button el-button--default"  @click="CargarEditorial=true">
+                                            <i class="el-icon-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </el-form-item>
+
+                            <!-- Producciones -->
+                            <el-form-item label="Producción">
+                                <el-select v-model="frmObra.ldProduccion" multiple placeholder="Selecciona" class="el-col el-col-24" style="padding:0px !important">
                                     <el-option
-                                        v-for="item in Editoriales"
+                                        v-for="item in Producciones"
                                         :key="item.id"
-                                        :label="item.Editorial"
+                                        :label="item.Produccion"
                                         :value="item.id">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-button type="primary" @click="CargarEditorial=true">Agregar Editorial</el-button>
-                        </el-col>
                         
-                        <!-- Descripcion -->
+                            <!-- Pais -->
+                            <el-form-item label="País de Origen">
+                                <div class="el-input el-input-group el-input-group--append">
+                                    <el-select v-model="frmObra.ldPais" placeholder="Selecciona" class="el-input__inner" style="border:none; box-shadow:none; padding:0px !important">
+                                        <el-option
+                                            v-for="item in Paises"
+                                            :key="item.id"
+                                            :label="item.Pais"
+                                            :value="item.id">
+                                        </el-option>
+                                    </el-select>
+                                    <div class="el-input-group__append">
+                                        <button type="button" class="el-button el-button--default"  @click="CargarPais=true">
+                                            <i class="el-icon-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </el-form-item>
+
+                            <!-- Año Inicio -->
+                            <el-form-item label="Año de Publicación" prop="Inicio">
+                                <el-input v-model="frmObra.Inicio" maxlength="4" @keypress.native="control($event,'n')"></el-input>
+                            </el-form-item>
+
+                        </el-col>
                         <el-col :xs="24" :sm="12">
+
+                            <!-- Descripcion -->
                             <el-form-item label="Descripción" prop="Descripcion">
                                 <el-input type="textarea" v-model="frmObra.Descripcion"></el-input>
                             </el-form-item>
-                        </el-col>                        
 
-                        <!-- Pais -->
-                        <el-col :xs="24" :sm="12">
-                            <el-form-item label="País de Origen">
-                                <el-select v-model="frmObra.ldPais" placeholder="Selecciona" class="el-col el-col-24" style="padding:0px !important">
-                                    <el-option
-                                        v-for="item in Paises"
-                                        :key="item.id"
-                                        :label="item.Pais"
-                                        :value="item.id">
-                                    </el-option>
-                                </el-select>
-                            </el-form-item>
-                            <el-button type="primary" @click="CargarPais=true">Agregar País</el-button>
-                        </el-col>
-
-                        <!-- Año Inicio -->
-                        <el-col :xs="24" :sm="12">
-                            <el-form-item label="Año de Publicación">
-                                <el-input v-model="frmObra.Inicio" maxlength="4" @keypress.native="control($event,'n')"></el-input>
-                            </el-form-item>
-                        </el-col>
-
-                        <!-- Portada -->
-                        <el-col :xs="24" :sm="12">
+                            <!-- Portada -->
                             <strong>Portada</strong><br><br>
                             <div tabindex="0" class="el-upload el-upload--picture">
                                 <el-button size="small" type="primary" @click="ClickInputFile('FlFoto')">
@@ -112,17 +133,65 @@
                             <div v-if="GuardarFoto">
                                 <img :src="PreviewFoto" style="width:100%"/>
                             </div>
+
                         </el-col>
+                        <el-col :span="24">
 
+                            <!-- Demografia -->
+                            <el-form-item label="Demografía">
+                                <el-select v-model="frmObra.ldDemografia" multiple placeholder="Selecciona" class="el-col el-col-24" style="padding:0px !important">
+                                    <el-option
+                                        v-for="item in Demografias"
+                                        :key="item.id"
+                                        :label="item.Demografia"
+                                        :value="item.id">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
 
-                        
+                            <!-- Estilos -->
+                            <el-form-item label="Estilos">
+                                <br> 
+                                <center>
+                                    <el-checkbox-button v-for="(estilo,index) in Estilos" :key="index" v-model="estilo.Checked">
+                                        {{ estilo.Estilo }}
+                                    </el-checkbox-button>
+                                </center>
+                            </el-form-item>
 
+                            <!-- Temas-->
+                            <el-form-item label="Temas">
+                                <br> 
+                                <center>
+                                    <el-checkbox-button v-for="(tema,index) in Temas" :key="index" v-model="tema.Checked">
+                                        {{ tema.Tema }}
+                                    </el-checkbox-button>
+                                </center>
+                            </el-form-item>
+
+                            <!-- Etiquetas -->
+                            <el-form-item label="Etiquetas">
+                                <br> 
+                                <center>
+                                    <el-checkbox-button v-for="(etiqueta,index) in Etiquetas" :key="index" v-model="etiqueta.Checked">
+                                        {{ etiqueta.Etiqueta }}
+                                    </el-checkbox-button>
+                                </center>
+                            </el-form-item>
+
+                        </el-col>
+                        <el-col :span="24" style="margin-top:20px">
+                            <el-row type="flex" justify="center">
+                                <el-col :xs="24" :sm="12" :md="9" :lg="6">
+                                    <el-button type="info"      @click="CargarObra=false"       style="width:100%">Cerrar         </el-button>    
+                                </el-col>
+                                <el-col :xs="24" :sm="12" :md="9" :lg="6">
+                                    <el-button type="primary"   @click="SubmitObra('frmObra')"  style="width:100%">Guardar Cambios</el-button>
+                                </el-col>                                
+                            </el-row>
+                        </el-col>
                     </el-row> 
                 </el-form>
-                <span slot="footer" class="dialog-footer">
-                    <el-button @click="CargarObra=false">Cerrar</el-button>
-                    <el-button type="primary" @click="CargarObra=false">Guardar Cambios</el-button>
-                </span>
             </el-dialog>
 
 
@@ -133,7 +202,7 @@
                 :show-close="false"
                 width="50%"
                 center>
-                <el-form ref="frmAutor" :model="frmAutor" :rules="rulesAutor" style="margin-top:10px">
+                <el-form ref="frmAutor" :model="frmAutor" :rules="rulesAutor" :status-icon="true" style="margin-top:10px">
                     <el-row>
                         <el-col :span="24">
                             <el-form-item label="Nombre del Autor" prop="Nombre">
@@ -158,7 +227,7 @@
                 :show-close="false"
                 width="50%"
                 center>
-                <el-form ref="frmEditorial" :model="frmEditorial" :rules="rulesEditorial" style="margin-top:10px">
+                <el-form ref="frmEditorial" :model="frmEditorial" :rules="rulesEditorial" :status-icon="true" style="margin-top:10px">
                     <el-row>
                         <el-col :span="24">
                             <el-form-item label="Nombre de la Editorial" prop="Nombre">
@@ -183,7 +252,7 @@
                 :show-close="false"
                 width="50%"
                 center>
-                <el-form ref="frmPais" :model="frmPais" :rules="rulesAutor" style="margin-top:10px">
+                <el-form ref="frmPais" :model="frmPais" :rules="rulesAutor" :status-icon="true" style="margin-top:10px">
                     <el-row>
                         <el-col :span="24">
                             <el-form-item label="Nombre del País" prop="Nombre">
@@ -228,18 +297,21 @@
                 frmObra:            {},
                 frmPais:            {},
                 Autores:            [],
-                Editoriales:        [],        
+                Demografias:        [],
+                Editoriales:        [],
+                Estilos:            [],
+                Etiquetas:          [],        
                 Paises:             [],
+                Producciones:       [],
+                Temas:              [],
                 error:              '',
 
                 //Foto
-                foto:               [],
                 NuevaFoto:          [],
                 PreviewFoto:        '#',
+                NuevaFotoString:    '',
                 GuardarFoto:        false,
 
-                rules: {
-                },
                 rulesAutor: {
                     Nombre: [
                         { required: true, message: 'Por favor, ingresa el Nombre del Autor', trigger: 'blur' },
@@ -251,7 +323,15 @@
                     ],    
                 },
                 rulesObra: {
-                    
+                    Titulo: [
+                        { required: true, message: 'Por favor, ingresa el Nombre de la Obra.', trigger: 'blur' },
+                    ], 
+                    Descripcion: [
+                        { required: true, message: 'Por favor, ingresa una descripción.', trigger: 'blur' },
+                    ], 
+                    Inicio: [
+                        { min: 4, max: 4, message: 'Ingresa un número de 4 dígitos', trigger: 'blur' }
+                    ],     
                 },
                 rulesPais: {
                     Nombre: [
@@ -303,7 +383,7 @@
             },
             _handleReaderLoadedFoto(readerEvt)
             {   var binaryString                            = readerEvt.target.result;
-                this.frmObra.flPortada                      = btoa(binaryString);               // Converting binary string data.
+                this.NuevaFotoString                        = btoa(binaryString);               // Converting binary string data.
             },
 
 
@@ -398,11 +478,48 @@
                 });
             },
 
-            Submit(formName)
+            SubmitObra(formName)
             {   this.error                                  = '';
                 this.$refs[formName].validate((valid) => {
                     if (valid)
-                    {                          
+                    {   var params = 'idUsuario=' + localStorage.getItem('VRDUSER') + '&Datos=' + JSON.stringify(this.frmObra) + '&Estilo=' + JSON.stringify(this.Estilos) + '&Tema=' + JSON.stringify(this.Temas) + '&Etiquetas=' + JSON.stringify(this.Etiquetas) + '&FotoName=' + this.NuevaFoto[0].name + '&FotoType=' + this.NuevaFoto[0].type + '&Foto=' + this.NuevaFotoString;
+                        var headers = new Headers(); 
+                        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+                        axios.post('http://studiosvrd.com/api/obras_insert.php', params, {headers: headers})                 
+                            .then(response => {
+                                const datos                 = response.data;
+                                this.Obras                  = datos['Obras'];
+                                this.Estilos                = datos['Estilos'];
+                                this.Temas                  = datos['Temas'];
+                                this.Etiquetas              = datos['Etiquetas'];
+                                this.CargarObra             = false;
+                                this.frmObra                = {};
+                                this.NuevaFoto              = [];
+                                this.frmObra.ldAutor        = '';
+                                this.frmObra.ldEditorial    = '';
+                                this.frmObra.ldProduccion   = '';
+                                this.frmObra.ldDemografia   = '';
+                                this.NuevaFotoString        = '';
+                                this.PreviewFoto            = '';
+                                this.$refs[formName].resetFields();
+                                window.scroll({
+                                    top:                    0, 
+                                    left:                   0, 
+                                    behavior:               'smooth' 
+                                });
+                                this.$message({
+                                    showClose:              true,
+                                    message:                'Obra cargada correctamente.',
+                                    type:                   'success'
+                                });
+                            })
+                            .catch(e => {
+                                this.$message({
+                                    showClose:              true,
+                                    message:                'Oops, por favor intenta nuevamente.',
+                                    type:                   'error'
+                                });
+                            })                     
                     }
                 });
                 window.scroll({
@@ -433,9 +550,13 @@
                     .then(response => {
                         const datos                         = response.data;
                         this.Autores                        = datos['Autores'];
+                        this.Demografias                    = datos['Demografias'];
                         this.Editoriales                    = datos['Editoriales'];
+                        this.Estilos                        = datos['Estilos'];
+                        this.Etiquetas                      = datos['Etiquetas'];
                         this.Paises                         = datos['Paises'];
-                        console.log(datos);
+                        this.Producciones                   = datos['Producciones'];
+                        this.Temas                          = datos['Temas'];
                     })
                     .catch(e => {
                         location.reload();

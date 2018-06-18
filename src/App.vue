@@ -94,10 +94,22 @@
     {   font-weight: bold;
         color: #58035e;
     }
-    .el-input__inner, .el-textarea__inner
+    .el-input__inner, .el-textarea__inner, .el-input-group__append
     {   -webkit-box-shadow: 0px 5px 5px 0px rgba(50, 50, 50, 0.5);
         -moz-box-shadow:    0px 5px 5px 0px rgba(50, 50, 50, 0.5);
         box-shadow:         0px 5px 5px 0px rgba(50, 50, 50, 0.5);
+    }
+    .el-input-group__append button.el-button,
+    .el-input-group__prepend button.el-button
+    {   background-color: #409EFF;
+        color: #fff;
+        font-weight: bold;
+    }
+    .el-input-group__append:hover button.el-button, 
+    .el-input-group__prepend:hover button.el-button
+    {   background-color: #66B1FF !important;
+        color: #fff;
+        font-weight: bold;
     }
 
     .el-dialog
