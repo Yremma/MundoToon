@@ -35,22 +35,22 @@
 
                 <!-- Formulario -->
                 <el-form ref="form" :model="form" :rules="rules" style="margin-top:40px">
-                    <el-col :xs="24" :sm="12" :md="8" v-if="!idUsuario">
+                    <el-col :xs="24" :sm="12" :md="8" v-if="!UsrTk">
                         <el-form-item label="Nombre" prop="Nombre">
                             <el-input v-model="form.Nombre"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :xs="24" :sm="12" :md="8" v-if="!idUsuario">
+                    <el-col :xs="24" :sm="12" :md="8" v-if="!UsrTk">
                         <el-form-item label="Correo Electrónico" prop="Mail">
                             <el-input type="email" v-model="form.Mail"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :xs="24" :sm="24" :md="8" v-if="!idUsuario">                        
+                    <el-col :xs="24" :sm="24" :md="8" v-if="!UsrTk">                        
                         <el-form-item label="Asunto" prop="Asunto">
                             <el-input v-model="form.Asunto"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="24" v-if="idUsuario">                        
+                    <el-col :span="24" v-if="UsrTk">                        
                         <el-form-item label="Asunto" prop="Asunto">
                             <el-input v-model="form.Asunto"></el-input>
                         </el-form-item>
@@ -86,7 +86,7 @@
         data()
         {   return {             
                 Pitty:          'imagenes/ul_li.svg',
-                idUsuario:      localStorage.getItem('VRDUSER'),
+                UsrTk:          this.$cookies.get("MTTK"),
                 error:          false,
                 success:        false,
                 form:       
@@ -122,7 +122,7 @@
                     if (valid)
                     {   axios.get('http://studiosvrd.com/api/contacto.php', {
                             params: {
-                                idUsuario:  this.idUsuario,
+                                token:      this.$cookies.get("MTTK"),
                                 Nombre:     this.form.Nombre,
                                 Mail:       this.form.Mail, 
                                 Asunto:     this.form.Asunto,

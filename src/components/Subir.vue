@@ -8,12 +8,57 @@
                 </div>
                 <hr>
 
-
-                <el-button type="primary" @click="CargarObra=true">Cargar Obra</el-button>
-
                 <!-- Formulario -->
-                <el-form ref="form" :model="form" :rules="rules" style="margin-top:10px">
-                    
+                <el-form ref="frmCapitulo" :model="frmCapitulo" :rules="rulesCapitulo" :status-icon="true" style="margin-top:10px">
+                    <el-row>
+                        <el-col :span="24" style="margin-top:30px">
+                            <el-form-item label="Selecciona la Obra a la que pertenece el Capítulo que estás por subir" prop="ldObra">
+                                <span style="float:right"><i>Si no la encuentras, cárgala haciendo click en éste botón.</i></span>
+                                <div class="el-input el-input-group el-input-group--append">
+                                    <el-select v-model="frmCapitulo.ldObra" placeholder="Selecciona" class="el-input__inner" style="border:none; box-shadow:none; padding:0px !important"
+                                    filterable remote reserve-keyword :remote-method="remoteMethod" :loading="CargandoObras">
+                                        <el-option
+                                            v-for="item in Obras"
+                                            :key="item.id"
+                                            :label="item.Titulo + ' (' + item.Autores + ')'"
+                                            :value="item.id">
+                                        </el-option>
+                                    </el-select>
+                                    <div class="el-input-group__append">
+                                        <button type="button" class="el-button el-button--default" @click="CargarObra=true">
+                                            <i class="el-icon-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :xs="24" :sm="12">
+                            <el-form-item label="Número de Capítulo" prop="Capitulo">
+                                <el-input type="text" v-model="frmCapitulo.Capitulo" @keypress.native="control($event,'n')"/>
+                            </el-form-item>    
+                        </el-col>
+                        <el-col :xs="24" :sm="12">
+                            <el-form-item label="Temporada">
+                                <el-input type="text" v-model="frmCapitulo.Temporada" placeholder="S/T" @keypress.native="control($event,'n')"/>
+                            </el-form-item>    
+                        </el-col>
+                        <el-col :span="24" align="center">
+                            Sube las imagenes
+                            <el-alert title="Sus nombres deben estar numerados desde el 1 en adelante" type="warning" :closable="false"></el-alert><br>
+                            <div tabindex="0" class="el-upload el-upload--picture">
+                                <el-button size="small" type="primary" @click="ClickInputFile('FlImagenes')">
+                                    Clic para subir archivos
+                                </el-button>
+                                <input id="FlImagenes" type="file" multiple @change="MostrarVistraPrevia($event)" style="display:none"/>
+                            </div>
+                            <div class="el-upload__tip">Ingresa un archivo del tipo jpg, jpeg, bmp o png.</div>
+                            <br><br>
+                            <div v-if="MostrarImagenes">
+                                <img :src="PreviewFoto" style="width:100%"/>
+                            </div>
+                        </el-col>
+                    </el-row>
+                   
                 </el-form>            
            
             </el-col>
@@ -291,8 +336,8 @@
                 CargarEditorial:    false,
                 CargarObra:         false,
                 CargarPais:         false,
-                form:               {},
                 frmAutor:           {},
+                frmCapitulo:        {},
                 frmEditorial:       {},
                 frmObra:            {},
                 frmPais:            {},
@@ -300,8 +345,10 @@
                 Demografias:        [],
                 Editoriales:        [],
                 Estilos:            [],
-                Etiquetas:          [],        
+                Etiquetas:          [],
+                Obras:              [],        
                 Paises:             [],
+                PreviewImagenes:    [],
                 Producciones:       [],
                 Temas:              [],
                 error:              '',
@@ -312,10 +359,26 @@
                 NuevaFotoString:    '',
                 GuardarFoto:        false,
 
+                //Autocompletar
+                ListaAuxiliar:      [],
+                CargandoObras:      false,
+
+
                 rulesAutor: {
                     Nombre: [
                         { required: true, message: 'Por favor, ingresa el Nombre del Autor', trigger: 'blur' },
                     ],    
+                },
+                rulesCapitulo: {
+                    ldObra: [
+                        { required: true, message: 'Selecciona la Obra a la que corresponde el capítulo que deseas subir.', trigger: 'blur' },
+                    ],
+                    Capitulo: [
+                        { required: true, message: 'Por favor, ingresa el Número del Capítulo.', trigger: 'blur' },
+                    ],
+                    Imagenes: [
+                        { required: true, message: 'Ingresa por lo menos una Imagen.', trigger: 'blur' },
+                    ]
                 },
                 rulesEditorial: {
                     Nombre: [
@@ -363,6 +426,24 @@
             },
 
 
+            /** FUNCIONES PARA EL AUTOCOMPLETAR *************************************************************/
+            remoteMethod(query) {
+                if (query!=='')
+                {   this.CargandoObras      = true;
+                    setTimeout(() => {
+                        this.CargandoObras  = false;
+                        this.Obras          = this.ListaAuxiliar.filter(item => {
+                        return item.Titulo.toLowerCase()
+                            .indexOf(query.toLowerCase()) > -1;
+                        });
+                    }, 200);
+                } 
+                else 
+                {   this.options4           = [];
+                }
+            },
+            
+
             /** FUNCIONES PARA LA SUBIDA DE IMAGENES ********************************************************/
             ClickInputFile(id)
             {   document.getElementById(id).click();
@@ -385,6 +466,9 @@
             {   var binaryString                            = readerEvt.target.result;
                 this.NuevaFotoString                        = btoa(binaryString);               // Converting binary string data.
             },
+            MostrarVistraPrevia(event)
+            {   console.log(event);
+            },
 
 
             /** ENVIO DE FORMULARIOS ************************************************************************/
@@ -393,7 +477,7 @@
                     if (valid)
                     {   axios.get('http://studiosvrd.com/api/autor_insert.php', {
                             params: {
-                                idUsuario:                  localStorage.getItem('VRDUSER'), 
+                                token:                      this.$cookies.get("MTTK"), 
                                 Nombre:                     this.frmAutor.Nombre,
                             } })
                             .then(response => {
@@ -423,7 +507,7 @@
                     if (valid)
                     {   axios.get('http://studiosvrd.com/api/editorial_insert.php', {
                             params: {
-                                idUsuario:                  localStorage.getItem('VRDUSER'), 
+                                token:                      this.$cookies.get("MTTK"), 
                                 Nombre:                     this.frmEditorial.Nombre,
                             } })
                             .then(response => {
@@ -453,7 +537,7 @@
                     if (valid)
                     {   axios.get('http://studiosvrd.com/api/pais_insert.php', {
                             params: {
-                                idUsuario:                  localStorage.getItem('VRDUSER'), 
+                                token:                      this.$cookies.get("MTTK"), 
                                 Nombre:                     this.frmPais.Nombre,
                             } })
                             .then(response => {
@@ -482,7 +566,12 @@
             {   this.error                                  = '';
                 this.$refs[formName].validate((valid) => {
                     if (valid)
-                    {   var params = 'idUsuario=' + localStorage.getItem('VRDUSER') + '&Datos=' + JSON.stringify(this.frmObra) + '&Estilo=' + JSON.stringify(this.Estilos) + '&Tema=' + JSON.stringify(this.Temas) + '&Etiquetas=' + JSON.stringify(this.Etiquetas) + '&FotoName=' + this.NuevaFoto[0].name + '&FotoType=' + this.NuevaFoto[0].type + '&Foto=' + this.NuevaFotoString;
+                    {   if(this.NuevaFotoString=='')
+                        {   var params = 'token=' + this.$cookies.get("MTTK") + '&Datos=' + JSON.stringify(this.frmObra) + '&Estilo=' + JSON.stringify(this.Estilos) + '&Tema=' + JSON.stringify(this.Temas) + '&Etiquetas=' + JSON.stringify(this.Etiquetas);
+                        }
+                        else
+                        {   var params = 'token=' + this.$cookies.get("MTTK") + '&Datos=' + JSON.stringify(this.frmObra) + '&Estilo=' + JSON.stringify(this.Estilos) + '&Tema=' + JSON.stringify(this.Temas) + '&Etiquetas=' + JSON.stringify(this.Etiquetas) + '&FotoName=' + this.NuevaFoto[0].name + '&FotoType=' + this.NuevaFoto[0].type + '&Foto=' + this.NuevaFotoString;
+                        }
                         var headers = new Headers(); 
                         headers.append('Content-Type', 'application/x-www-form-urlencoded');
                         axios.post('http://studiosvrd.com/api/obras_insert.php', params, {headers: headers})                 
@@ -542,7 +631,7 @@
 
 
         beforeMount()
-        {   if(!localStorage.getItem('VRDUSER'))
+        {   if(!this.$cookies.get("MTTK"))
             {   this.$router.push('login');
             }
             else
@@ -554,9 +643,13 @@
                         this.Editoriales                    = datos['Editoriales'];
                         this.Estilos                        = datos['Estilos'];
                         this.Etiquetas                      = datos['Etiquetas'];
+                        this.Obras                          = datos['Obras'];
                         this.Paises                         = datos['Paises'];
                         this.Producciones                   = datos['Producciones'];
                         this.Temas                          = datos['Temas'];
+                        this.ListaAuxiliar = this.Obras.map(item => {
+                            return { id: item.id, Titulo: item.Titulo };
+                        });
                     })
                     .catch(e => {
                         location.reload();

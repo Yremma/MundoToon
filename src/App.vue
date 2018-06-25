@@ -111,6 +111,9 @@
         color: #fff;
         font-weight: bold;
     }
+    .el-select-dropdown__item.selected.hover
+    {   color: #fff;
+    }
 
     .el-dialog
     {   margin-left: 0px !important;

@@ -2,6 +2,8 @@ import Vue              from 'vue'
 import Router           from 'vue-router'
 import ElementUI        from 'element-ui'
 import locale           from 'element-ui/lib/locale/lang/es'
+import VueCookies       from 'vue-cookies'
+
 
 import 'element-theme-default';
 import 'element-ui/lib/theme-chalk/index.css'
@@ -23,6 +25,7 @@ import Tutoriales       from '@/components/Footer_Tutoriales'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI, { locale })
+Vue.use(VueCookies)
 Vue.use(Router)
 
 

@@ -117,14 +117,15 @@
                                 Pass:           this.form.Pass, 
                             } })
                             .then(response => {
-                                const datos     = response.data
-                                if(datos['idUsuario'])
-                                {   localStorage.setItem('VRDUSER', datos['idUsuario']); 
-                                    window.location.href            = 'home';
+                                const datos     = response.data;
+                                console.log(datos);
+                                if(datos['error']=='')
+                                {   this.$cookies.set("MTTK",   response.data['token'], "1h");
+                                    window.location.href        = '/';
                                 }
                                 else
                                 {   this.error  = datos['error'];
-                                }                                
+                                }                             
                             })
                             .catch(e => {
                                 this.error      = 'error';
@@ -149,7 +150,7 @@
 
 
         beforeMount()
-        {   localStorage.removeItem('VRDUSER');
+        {   this.$cookies.remove("MTTK");
             window.scroll({
                 top: 0, 
                 left: 0, 
