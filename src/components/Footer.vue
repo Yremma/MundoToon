@@ -8,6 +8,8 @@
                         <embed :src="Pitty"/>&nbsp;&nbsp;<router-link class="btn-footer" to="/mision"       >Sobre Nosotros             </router-link><br>
                         <embed :src="Pitty"/>&nbsp;&nbsp;<router-link class="btn-footer" to="/reglas"       >Reglas de la Comunidad     </router-link><br>
                         <embed :src="Pitty"/>&nbsp;&nbsp;<router-link class="btn-footer" to="/contacto"     >Contacto                   </router-link><br>
+                        <embed :src="Pitty"/>&nbsp;&nbsp;<router-link class="btn-footer" to="/privacidad"   >Política de Privacidad     </router-link><br>
+                        <embed :src="Pitty"/>&nbsp;&nbsp;<router-link class="btn-footer" to="/condiciones"  >Términos y Condiciones     </router-link><br><br>
                     </el-col>
                     <el-col :xs="24" :md="15" align="justify">
                         <br>

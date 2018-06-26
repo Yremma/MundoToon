@@ -58,7 +58,7 @@
                         <router-link to="/recuperar" class="el-button el-col el-col-24 el-button--default" style="margin-top:5px">Recuperar Contraseña</router-link>
                     </el-col>
                     <el-col :span="24" style="margin-top:30px">
-                        <el-button class="el-col el-col-24 btn-facebook">Iniciar con Facebook</el-button>
+                        <el-button class="el-col el-col-24 btn-facebook" @click="FBLogin()">Iniciar con Facebook</el-button>
                     </el-col>
                     <el-col :span="24" style="margin-top:5px">
                         <el-button class="el-col el-col-24 btn-twitter">Iniciar con Twitter</el-button>    
@@ -88,7 +88,7 @@
                 error:          '',
                 form:       
                 {   Username:   '',
-                    Pass:       '',
+                    Pass:       ''
                 },
 
                 rules: {
@@ -107,28 +107,67 @@
         {   control(e)
             {   if(e.keyCode === 13) { this.Submit('form'); }                   // Envia apretando el Enter
             },
+            FBLogin() 
+            {   FB.login(function(response) 
+                {   this.error                          = '';
+                    if (response.status === 'connected') 
+                    {   FB.api('/me', { fields: 'name, email, birthday' }, function(response2) 
+                        {   FB.api('/' + response2['id'] + '/picture', { "redirect": false, "height": "800", "type": "large", "width": "800" }, function(response3) 
+                            {   axios.get('http://studiosvrd.com/api/login_facebook.php', {
+                                    params: {
+                                        UserID:         response2['id'],
+                                        Username:       response2['name'],
+                                        Email:          response2['email'],
+                                        Nacimiento:     response2['birthday'],
+                                        Foto:           response3['data']['url'],
+                                    } })
+                                    .then(response => {
+                                        const datos     = response.data;
+                                        if(datos['error']=='')
+                                        {   this.$cookies.set("MTTK",   response.data['token'], "1h");
+                                            window.location.href        = '/';
+                                        }
+                                        else
+                                        {   this.error  = datos['error'];
+                                        }                          
+                                    })
+                                    .catch(e => {
+                                        this.error      = 'error';
+                                    });
+                            });
+                        });
+                    };
+                }, 
+                {   scope: 'email',
+                    auth_type: 'rerequest'
+                });
+                window.scroll({
+                    top: 0, 
+                    left: 0, 
+                    behavior: 'smooth' 
+                });
+            },
             Submit(formName)
-            {   this.error      = '';
+            {   this.error                              = '';
                 this.$refs[formName].validate((valid) => {
                     if (valid)
                     {   axios.get('http://studiosvrd.com/api/login.php', {
                             params: {
-                                Username:       this.form.Username,
-                                Pass:           this.form.Pass, 
+                                Username:               this.form.Username,
+                                Pass:                   this.form.Pass, 
                             } })
                             .then(response => {
-                                const datos     = response.data;
-                                console.log(datos);
+                                const datos             = response.data;
                                 if(datos['error']=='')
                                 {   this.$cookies.set("MTTK",   response.data['token'], "1h");
                                     window.location.href        = '/';
                                 }
                                 else
-                                {   this.error  = datos['error'];
+                                {   this.error          = datos['error'];
                                 }                             
                             })
                             .catch(e => {
-                                this.error      = 'error';
+                                this.error              = 'error';
                             })                        
                     }
                 });
@@ -151,6 +190,7 @@
 
         beforeMount()
         {   this.$cookies.remove("MTTK");
+            FB.logout();
             window.scroll({
                 top: 0, 
                 left: 0, 
