@@ -58,10 +58,11 @@
                         <router-link to="/recuperar" class="el-button el-col el-col-24 el-button--default" style="margin-top:5px">Recuperar Contraseña</router-link>
                     </el-col>
                     <el-col :span="24" style="margin-top:30px">
-                        <el-button class="el-col el-col-24 btn-facebook" @click="FBLogin()">Iniciar con Facebook</el-button>
+                        <el-button class="el-col el-col-24 btn-facebook" @click="FBLogin()" >Iniciar con Facebook</el-button>
                     </el-col>
                     <el-col :span="24" style="margin-top:5px">
-                        <el-button class="el-col el-col-24 btn-twitter">Iniciar con Twitter</el-button>    
+                        <el-button class="el-col el-col-24 btn-twitter"  @click="TWTLogin()">Iniciar con Twitter</el-button>
+                        <a href="https://api.twitter.com/oauth/request_token" target="_blank">asdasd</a>
                     </el-col>
                     <el-col :span="24" style="margin-top:5px">
                         <el-button class="el-col el-col-24 btn-google">Iniciar con Google</el-button>    
@@ -136,7 +137,7 @@
                                     });
                             });
                         });
-                    };
+                    }
                 }, 
                 {   scope: 'email',
                     auth_type: 'rerequest'
@@ -146,6 +147,26 @@
                     left: 0, 
                     behavior: 'smooth' 
                 });
+            },
+            TWTLogin()
+            {   axios.get('http://studiosvrd.com/api/login_twitter.php')
+                    .then(response => {
+                        const datos             = response.data;
+                        console.log(datos);
+                        /*
+                        if(datos['error']=='')
+                        {   this.$cookies.set("MTTK",   response.data['token'], "1h");
+                            window.location.href        = '/';
+                        }
+                        else
+                        {   this.error          = datos['error'];
+                        }
+                        */                            
+                    })
+                    .catch(e => {
+                        this.error              = 'error';
+                    })
+
             },
             Submit(formName)
             {   this.error                              = '';

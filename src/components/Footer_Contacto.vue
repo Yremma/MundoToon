@@ -129,7 +129,6 @@
                                 Mensaje:    this.form.Mensaje,
                             } })
                             .then(response => {
-                                const datos = response.data
                                 this.form.Nombre    = '';
                                 this.form.Mail      = '';
                                 this.form.Asunto    = '';
